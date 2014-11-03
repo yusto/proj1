@@ -1,3 +1,34 @@
 <h3>Trainer</h3>
 <p>Name: <%= @trainer.name if @trainer.name %></p>
 <p>Email: <%= @trainer.email if @trainer.email %></p>
+<% if @trainer.pokemons.empty? == false %>
+    <h5>Pokemons:</h5>
+    	<ul>
+	   		<% @trainer.pokemons.each do |pokemon| %>
+	   			<% if (@trainer != current_trainer) %>
+	   				<% if (pokemon.health > 0) %>   				
+			      		<li>
+			      		<%= pokemon.name %>, Level: <%= pokemon.level %>, Health: <%= pokemon.health %>
+			      		<% if current_trainer.pokemons.empty? == false %>
+				      		<%= simple_form_for pokemon, :url => damage_path(id: pokemon) do |f| %>
+								<%= f.collection_select :id, @ct_pokemons, :id, :name %>
+								<%= f.button :submit, 'Attack!' %>
+							<% end %>
+						<% end %>
+			      		</li>
+			      	<% end %>
+		      	<% else %>
+		      		<li>
+		      		<%= pokemon.name %>, Level: <%= pokemon.level %>, Health: <%= pokemon.health %>, Experience: <%= pokemon.experience %>
+		      		<%= button_to "Heal!", heal_path(id: pokemon), :class => "button medium", :method => :patch %>
+		      		<%= button_to "Release!", release_path(id: pokemon), :class => "button small", :method => :delete %>
+		      		</li>
+		      	<% end %>
+	      	<% end %>
+	    </ul>
+<% else %>
+	<h5>Pokemons: No Pokemon!</h5>
+<% end %>
+<% if @trainer == current_trainer %>
+	<%= link_to "Create Pokemon!", new_pokemon_path, :class => "button medium" %>
+<% end %>
