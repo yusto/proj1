@@ -11,7 +11,7 @@
 			      		<%= pokemon.name %>, Level: <%= pokemon.level %>, Health: <%= pokemon.health %>
 			      		<% if current_trainer.pokemons.empty? == false %>
 				      		<%= simple_form_for pokemon, :url => damage_path(id: pokemon) do |f| %>
-								<%= f.collection_select :id, @ct_pokemons, :id, :name %>
+								<%= f.collection_select :pokemon, :id, Pokemon.all, :name %>
 								<%= f.button :submit, 'Attack!' %>
 							<% end %>
 						<% end %>
